@@ -7,14 +7,15 @@
     "url": "https://github.com/PaulRBerg"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "^5.0.1"
+    "@openzeppelin/contracts": "4.9.3",
+    "@openzeppelin/contracts-upgradeable": "4.9.3"
   },
   "devDependencies": {
     "@prb/test": "^0.6.4",
     "forge-std": "github:foundry-rs/forge-std#v1.7.5",
     "prettier": "^3.0.0",
     "solhint": "^3.6.2",
-    "@pendle/core-v2": "^4.1.0"
+    "@pendle/core-v2": "^4.2.6"
   },
   "keywords": [
     "blockchain",
