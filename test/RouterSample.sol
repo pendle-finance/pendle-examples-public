@@ -218,4 +218,21 @@ contract RouterSample is PRBTest, StdCheats, StructGen {
 
         console.log("netPtOut: %s, netYtOut: %s", netPtOut, netYtOut);
     }
+
+    function test_claim_rewards_any_tokens() external {
+        address token = address(SY);
+
+        try IPMarket(token).redeemRewards(address(this)) returns (uint256[] memory res1) {
+            // it is market
+        } catch {
+            try IPYieldToken(token).redeemDueInterestAndRewards(address(this), true, true) returns (
+                uint256, uint256[] memory res2
+            ) {
+                // it is YT
+            } catch {
+                IStandardizedYield(token).claimRewards(address(this));
+                // it must be SY then
+            }
+        }
+    }
 }
