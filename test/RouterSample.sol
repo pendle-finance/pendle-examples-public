@@ -9,7 +9,7 @@ import "@pendle/core-v2/contracts/interfaces/IPMarket.sol";
 import "../src/StructGen.sol";
 
 contract RouterSample is PRBTest, StdCheats, StructGen {
-    IPAllActionV3 public constant router = IPAllActionV3(0x00000000005BBB0EF59571E58418F9a4357b68A0);
+    IPAllActionV3 public constant router = IPAllActionV3(0x888888888889758F76e7103c6CbF23ABbF58F946);
     IPMarket public constant market = IPMarket(0xD0354D4e7bCf345fB117cabe41aCaDb724eccCa2);
     address public constant wstETH = 0x7f39C581F595B53c5cb19bD0b3f8dA6c935E2Ca0;
 
@@ -18,7 +18,7 @@ contract RouterSample is PRBTest, StdCheats, StructGen {
     IPYieldToken public YT;
 
     function setUp() public virtual {
-        vm.createSelectFork({ urlOrAlias: "mainnet", blockNumber: 19_405_040 });
+        vm.createSelectFork({ urlOrAlias: "mainnet", blockNumber: 19_946_945 });
 
         (SY, PT, YT) = IPMarket(market).readTokens();
 
