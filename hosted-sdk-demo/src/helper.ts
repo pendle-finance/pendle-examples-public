@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { ethers } from 'ethers';
 
-const HOSTED_SDK_URL = 'https://api-v2.pendle.finance/external/';
+const HOSTED_SDK_URL = 'https://api-v2.pendle.finance/api/external/';
 
 type MethodReturnType<Data> = {
     tx: {
