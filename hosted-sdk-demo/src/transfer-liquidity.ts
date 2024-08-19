@@ -13,7 +13,6 @@ export async function transferLiquidity() {
         lpAmount: '1000000000000000000',
         ptAmount: '0',
         ytAmount: '0',
-        enableAggregator: true,
     });
 
     console.log('Amount LP Out: ', res.data.amountLpOut);
@@ -32,7 +31,6 @@ export async function transferLiquidityKeepYt() {
         lpAmount: '1000000000000000000',
         ptAmount: '0',
         ytAmount: '0',
-        enableAggregator: true,
         zpi: true,
     });
 

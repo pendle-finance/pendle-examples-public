@@ -11,7 +11,6 @@ export async function rollOverPt() {
         slippage: 0.01,
         dstMarket: MARKET_ADDRESS,
         ptAmount: '1000000000000000000',
-        enableAggregator: true,
     });
 
     console.log('Amount PT Out: ', res.data.amountPtOut);
