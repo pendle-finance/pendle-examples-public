@@ -32,6 +32,19 @@ interface MarketInfo {
   sy: {
     id: string;
   };
+  liquidity: {
+    usd: number;
+    acc: number;
+  };
+  underlyingInterestApy: number;
+  underlyingRewardApy: number,
+  underlyingApy: number;
+  impliedApy: number;
+  ytFloatingApy: number;
+  aggregatedApy: number;
+  maxBoostedApy: number;
+  lpRewardApy: number;
+  voterApy: number;
 }
 
 interface Response {
@@ -64,10 +77,11 @@ export async function getMarkets() {
 
   console.log('result info', {limit, total, skip});
 
-  const {name, address, expiry, pt, sy, yt} = markets[0];
+  const {name, address, expiry, pt, sy, yt, liquidity, impliedApy, aggregatedApy, underlyingApy, lpRewardApy, underlyingInterestApy, underlyingRewardApy, maxBoostedApy, voterApy, ytFloatingApy} = markets[0];
   const {id: ptId} = pt;
   const {id: syId} = sy;
   const {id: ytId} = yt;
+  const {usd: liquidityUSD } = liquidity;
 
-  console.log('first active market', {name, address, expiry, ptId, syId, ytId});
+  console.log('first active market', {name, address, expiry, ptId, syId, ytId, liquidityUSD, impliedApy, aggregatedApy, underlyingApy, lpRewardApy, underlyingInterestApy, underlyingRewardApy, maxBoostedApy, voterApy, ytFloatingApy });
 }
