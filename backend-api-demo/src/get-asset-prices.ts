@@ -1,5 +1,6 @@
-import { EXTERNAL_DOMAIN } from "./const";
+import { CORE_DOMAIN } from "./const";
 import axios from "axios";
+import { parse } from "csv-string";
 
 interface GetSpotPriceParam {
   chainId: number;
@@ -10,7 +11,9 @@ interface GetSpotPriceQuery {
 }
 
 interface GetSpotPriceResponse {
-  prices: Record<string, number>;
+  total: number;
+  addresses: string[];
+  pricesUsd: (number | null)[];
 }
 
 interface GetHistoricalPricesParam {
@@ -34,11 +37,11 @@ interface HistoricalPriceData {
 
 interface GetHistoricalPricesResponse {
   total: number;
-  limit: number;
   currency: string;
-  timestampStart: string;
-  timestampEnd: string;
-  data: HistoricalPriceData;
+  timeFrame: string;
+  timestamp_start: number;
+  timestamp_end: number;
+  results: string;
 }
 
 export async function getAssetPrices() {
@@ -48,14 +51,17 @@ export async function getAssetPrices() {
     chainId: 1, // Ethereum
   };
 
-  const targetPath = `/v1/${param.chainId}/assets/prices`;
+  const targetPath = `/v1/${param.chainId}/prices/assets/all`;
 
-  const { data } = await axios.get<GetSpotPriceResponse>(EXTERNAL_DOMAIN + targetPath);
+  const { data } = await axios.get<GetSpotPriceResponse>(CORE_DOMAIN + targetPath);
 
-  const { prices } = data;
+  const {total, pricesUsd, addresses} = data;
 
-  const key = Object.keys(prices)[0];
-  console.log(`prices of ${key} is ${prices[key]} USD`);
+  console.log('result info', {total});
+
+  const address = addresses[0];
+
+  console.log(`prices of ${address} is ${pricesUsd[0] ?? 0} USD`);
 }
 
 export async function getHistoricalAssetPrices() {
@@ -72,16 +78,19 @@ export async function getHistoricalAssetPrices() {
     timestampEnd: new Date("2024-08-11T00:00:00.000+00:00"),
   };
 
-  const targetPath = `/v1/${param.chainId}/assets/${param.address}/historical-prices`;
-  const { data: response } = await axios.get<GetHistoricalPricesResponse>(EXTERNAL_DOMAIN + targetPath, { params: query });
-  console.log('response data', {total: response.total, limit: response.limit, currency: response.currency, timestampStart: response.timestampStart, timestampEnd: response.timestampEnd});
+  const targetPath = `/v4/${param.chainId}/prices/${param.address}/ohlcv`;
+  const { data: response } = await axios.get<GetHistoricalPricesResponse>(CORE_DOMAIN + targetPath, { params: query });
+  console.log('response data', {total: response.total, currency: response.currency, timestamp_start: response.timestamp_start, timestamp_end: response.timestamp_end });
 
-  const {data} = response;
+  const {results} = response;
+
+  const data = parse(results, {output: 'objects'})
+
   console.log('first data point info', {
-    timestamp: data.timestamps[0],
-    high: data.highs[0],
-    low: data.lows[0],
-    open: data.opens[0],
-    close: data.closes[0],
+    timestamp: data[0].time,
+    high: data[0].open,
+    low: data[0].low,
+    open: data[0].open,
+    close: data[0].close,
   })
 }

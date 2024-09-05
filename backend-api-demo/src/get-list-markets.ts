@@ -1,55 +1,73 @@
 import axios from "axios";
-import { EXTERNAL_DOMAIN } from "./const";
+import { CORE_DOMAIN } from "./const";
 
 interface Param {
   chainId: number;
+}
+
+interface Query {
+  order_by?: string;
+  skip?: number;
+  limit?: number;
+  is_expired?: boolean;
+  select?: string;
+  pt?: string;
+  yt?: string;
+  sy?: string;
+  q?: string;
+  is_active?: boolean;
+  categoryId?: string;
 }
 
 interface MarketInfo {
   name: string;
   address: string;
   expiry: string;
-  pt: string;
-  yt: string;
-  sy: string;
+  pt: {
+    id: string;
+  };
+  yt: {
+    id: string;
+  };
+  sy: {
+    id: string;
+  };
 }
 
 interface Response {
-  markets: MarketInfo[];
+  total: number;
+  limit: number;
+  skip: number;
+  results: MarketInfo[];
 }
 
-export async function getActiveMarkets() {
+export async function getMarkets() {
   // This is an example of how to get list of active Pendle markets on Ethereum
 
   const param: Param = {
     chainId: 1, // Ethereum
   }
 
-  const targetPath = `/v1/${param.chainId}/markets/active`;
-
-  const { data } = await axios.get<Response>(EXTERNAL_DOMAIN + targetPath);
-
-  const { markets } = data;
-
-  const {name, address, expiry, pt, sy, yt} = markets[0];
-
-  console.log('first active market', {name, address, expiry, pt, sy, yt});
-}
-
-export async function getInactiveMarkets() {
-  // This is an example of how to get list of inactive Pendle markets on Ethereum
-
-  const param: Param = {
-    chainId: 1, // Ethereum
+  const query: Query = {
+    order_by: 'name:1',
+    skip: 0,
+    limit: 10,
+    is_expired: false,
+    select: 'pro',
   }
 
-  const targetPath = `/v1/${param.chainId}/markets/inactive`;
+  const targetPath = `/v1/${param.chainId}/markets`;
 
-  const { data } = await axios.get<Response>(EXTERNAL_DOMAIN + targetPath);
+  const { data } = await axios.get<Response>(CORE_DOMAIN + targetPath, {params: query});
 
-  const { markets } = data;
+  const { results: markets, skip, limit, total } = data;
+
+  console.log('result info', {limit, total, skip});
 
   const {name, address, expiry, pt, sy, yt} = markets[0];
+  const {id: ptId} = pt;
+  const {id: syId} = sy;
+  const {id: ytId} = yt;
 
-  console.log('first inactive market', {name, address, expiry, pt, sy, yt});
+  console.log('first active market', {name, address, expiry, ptId, syId, ytId});
 }
