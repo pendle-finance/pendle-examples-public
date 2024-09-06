@@ -1,8 +1,19 @@
 import axios from "axios";
-import { EXTERNAL_DOMAIN } from "./const";
+import { CORE_DOMAIN } from "./const";
 
 interface Param {
   chainId: number;
+}
+
+interface Query {
+  order_by?: string;
+  skip?: number;
+  limit?: number;
+  is_expired?: boolean;
+  zappable?: boolean;
+  type?: string;
+  address?: string;
+  q?: string;
 }
 
 interface AssetInfo {
@@ -10,28 +21,40 @@ interface AssetInfo {
   decimals: number;
   address: string;
   symbol: string;
-  tags: string[];
+  types: string[];
   expiry: string;
 }
 
 interface Response {
-  assets: AssetInfo[];
+  results: AssetInfo[];
+  total: number;
+  limit: number;
+  skip: number;
 }
 
-export async function getAssetList() {
+export async function getAssets() {
   // This is an example of how to get list of Pendle assets on Ethereum
 
   const param: Param = {
     chainId: 1, // Ethereum
   }
 
-  const targetPath = `/v1/${param.chainId}/assets/all`;
+  const query: Query = {
+    order_by: 'name:1',
+    skip: 0,
+    limit: 10,
+    is_expired: false,
+  }
 
-  const { data } = await axios.get<Response>(EXTERNAL_DOMAIN + targetPath);
+  const targetPath = `/v1/${param.chainId}/assets`;
 
-  const { assets } = data;
+  const { data } = await axios.get<Response>(CORE_DOMAIN + targetPath, {params: query});
 
-  const {name, address, decimals, expiry, symbol, tags} = assets[0];
+  const {total, limit, skip, results: assets} = data;
 
-  console.log('first asset', {name, address, decimals, expiry, symbol, tags});
+  console.log('result info', {limit, total, skip});
+
+  const {name, address, decimals, expiry, symbol, types} = assets[0];
+
+  console.log('first asset', {name, address, decimals, expiry, symbol, types});
 }

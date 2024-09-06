@@ -1,5 +1,6 @@
-import { EXTERNAL_DOMAIN } from "./const";
+import { CORE_DOMAIN } from "./const";
 import axios from "axios";
+import { parse } from "csv-string";
 
 interface Param {
   chainId: number;
@@ -20,11 +21,9 @@ interface MarketHistoricalData {
 
 interface Response {
   total: number;
-  limit: number;
-  currency: string;
-  timestampStart: string;
-  timestampEnd: string;
-  data: MarketHistoricalData;
+  timestamp_start: string;
+  timestamp_end: string;
+  results: string;
 }
 
 export async function getMarketHistoricalData() {
@@ -41,15 +40,19 @@ export async function getMarketHistoricalData() {
     timestampEnd: new Date("2024-08-11T00:00:00.000+00:00"),
   }
 
-  const targetPath = `/v1/${param.chainId}/markets/${param.address}/historical-data`;
+  const targetPath = `/v2/${param.chainId}/markets/${param.address}/apy-history`;
 
-  const { data: response } = await axios.get<Response>(EXTERNAL_DOMAIN + targetPath, {params: query});
-  console.log('response data', {total: response.total, limit: response.limit, timestampStart: response.timestampStart, timestampEnd: response.timestampEnd});
+  const { data: response } = await axios.get<Response>(CORE_DOMAIN + targetPath, {params: query});
 
-  const {data} = response;
+  console.log('response data', {total: response.total, timestamp_start: response.timestamp_start, timestamp_end: response.timestamp_end });
+
+  const {results} = response;
+
+  const data = parse(results, {output: 'objects'})
+
   console.log('first data point info', {
-    timestamp: data.timestamps[0],
-    underlyingApy: data.underlyingApys[0],
-    impliedApy: data.impliedApys[0],
+    timestamp: data[0].timestamp,
+    underlyingApy: data[0].underlyingApy,
+    impliedApy: data[0].impliedApy,
   })
 }
