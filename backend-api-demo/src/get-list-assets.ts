@@ -21,15 +21,12 @@ interface AssetInfo {
   decimals: number;
   address: string;
   symbol: string;
-  types: string[];
+  tags: string[];
   expiry: string;
 }
 
 interface Response {
-  results: AssetInfo[];
-  total: number;
-  limit: number;
-  skip: number;
+  assets: AssetInfo[];
 }
 
 export async function getAssets() {
@@ -39,22 +36,11 @@ export async function getAssets() {
     chainId: 1, // Ethereum
   }
 
-  const query: Query = {
-    order_by: 'name:1',
-    skip: 0,
-    limit: 10,
-    is_expired: false,
-  }
+  const targetPath = `/v3/${param.chainId}/assets/all`;
 
-  const targetPath = `/v1/${param.chainId}/assets`;
+  const { data } = await axios.get<Response>(CORE_DOMAIN + targetPath);
 
-  const { data } = await axios.get<Response>(CORE_DOMAIN + targetPath, {params: query});
+  const {assets} = data;
 
-  const {total, limit, skip, results: assets} = data;
-
-  console.log('result info', {limit, total, skip});
-
-  const {name, address, decimals, expiry, symbol, types} = assets[0];
-
-  console.log('first asset', {name, address, decimals, expiry, symbol, types});
+  console.log('first asset', assets[0]);
 }
