@@ -2,18 +2,16 @@ import { CORE_DOMAIN } from "./const";
 import axios from "axios";
 import { parse } from "csv-string";
 
-interface GetSpotPriceParam {
+interface GetAssetPricesParam {
   chainId: number;
 }
 
-interface GetSpotPriceQuery {
-  address?: string[];
+interface GetAssetPricesQuery {
+  addresses?: string; // separated by commas, return all asset prices if empty
 }
 
-interface GetSpotPriceResponse {
-  total: number;
-  addresses: string[];
-  pricesUsd: (number | null)[];
+interface GetAssetPricesResponse {
+  prices: Record<string, number>;
 }
 
 interface GetHistoricalPricesParam {
@@ -45,23 +43,31 @@ interface GetHistoricalPricesResponse {
 }
 
 export async function getAssetPrices() {
-  // This is an example of how to get all spot prices of assets on Ethereum
+  // This is an example of how to get all spot prices of pendle assets on Ethereum
 
-  const param: GetSpotPriceParam = {
+  const param: GetAssetPricesParam = {
     chainId: 1, // Ethereum
   };
 
-  const targetPath = `/v1/${param.chainId}/prices/assets/all`;
+  const addressPt_USDe = '0xa8778dd6b7f1f61f2cfda5d3cb18be8f99a8db30'; // address of PT-USDe-26DEC2024
+  const addressPt_weETH = '0x6ee2b5e19ecba773a352e5b21415dc419a700d1d'; // address of PT-weETH-26DEC2024
 
-  const { data } = await axios.get<GetSpotPriceResponse>(CORE_DOMAIN + targetPath);
+  const addresses = `${addressPt_USDe},${addressPt_weETH}`;
 
-  const {total, pricesUsd, addresses} = data;
+  const query: GetAssetPricesQuery = {
+    addresses: addresses
+  }
 
-  console.log('result info', {total});
+  const targetPath = `/v1/${param.chainId}/assets/prices`;
 
-  const address = addresses[0];
+  const { data } = await axios.get<GetAssetPricesResponse>(CORE_DOMAIN + targetPath, {
+    params: query
+  });
 
-  console.log(`prices of ${address} is ${pricesUsd[0] ?? 0} USD`);
+  const {prices: priceUsdMap} = data;
+
+  console.log(`price of Pt USDe is ${priceUsdMap[addressPt_USDe] ?? 0} USD`);
+  console.log(`price of Pt weETH is ${priceUsdMap[addressPt_weETH] ?? 0} USD`);
 }
 
 export async function getHistoricalAssetPrices() {
