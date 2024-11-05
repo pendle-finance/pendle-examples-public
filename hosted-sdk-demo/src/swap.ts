@@ -1,4 +1,4 @@
-import { CHAIN_ID, MARKET_ADDRESS, PT_ADDRESS, RECEIVER_ADDRESS, SY_ADDRESS, wstETH, YT_ADDRESS } from "./constants";
+import { CHAIN_ID, MARKET_ADDRESS, PT_ADDRESS, RECEIVER_ADDRESS, SY_ADDRESS, USDC, wstETH, YT_ADDRESS } from "./constants";
 import { callSDK, getSigner } from "./helper";
 import { SwapData } from "./types";
 
@@ -132,6 +132,48 @@ export async function swapYtToToken() {
     });
 
     console.log('Amount wstETH Out: ', res.data.amountOut);
+    console.log('Price impact: ', res.data.priceImpact);
+
+    // Send tx
+    getSigner().sendTransaction(res.tx);
+}
+
+// enable aggregator
+
+export async function swapTokenToPtUsingAggregation() {
+    // Swap 1000 USDC to PT in wstETH market with 1% slippage
+    const res = await callSDK<SwapData>(`/v1/sdk/${CHAIN_ID}/markets/${MARKET_ADDRESS}/swap`, {
+        receiver: RECEIVER_ADDRESS,
+        slippage: 0.01,
+        tokenIn: USDC,
+        tokenOut: PT_ADDRESS,
+        // USDC has 6 decimals
+        amountIn: (1000n * 10n ** 6n).toString(),
+        // enable aggregator, else it will throw an error because USDC could not be directly swapped to PT
+        enableAggregator: true,
+    });
+
+    console.log('Amount PT Out: ', res.data.amountOut);
+    console.log('Price impact: ', res.data.priceImpact);
+
+    // Send tx
+    getSigner().sendTransaction(res.tx);
+}
+
+
+export async function swapPtToTokenUsingAggregation() {
+    // Swap 1 PT to USDC in wstETH market with 1% slippage
+    const res = await callSDK<SwapData>(`/v1/sdk/${CHAIN_ID}/markets/${MARKET_ADDRESS}/swap`, {
+        receiver: RECEIVER_ADDRESS,
+        slippage: 0.01,
+        tokenIn: PT_ADDRESS,
+        tokenOut: USDC,
+        amountIn: '1000000000000000000',
+        // enable aggregator
+        enableAggregator: true,
+    });
+
+    console.log('Amount USDC Out: ', res.data.amountOut);
     console.log('Price impact: ', res.data.priceImpact);
 
     // Send tx
