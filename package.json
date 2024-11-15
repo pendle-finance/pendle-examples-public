@@ -15,7 +15,7 @@
     "forge-std": "github:foundry-rs/forge-std#v1.7.5",
     "prettier": "^3.0.0",
     "solhint": "^3.6.2",
-    "@pendle/core-v2": "^4.7.0"
+    "@pendle/core-v2": "^5.2.1"
   },
   "keywords": [
     "blockchain",
