@@ -1,0 +1,1 @@
+export const CORE_DOMAIN = `https://api-v2.pendle.finance/api/core`;

@@ -1,0 +1,5 @@
+@openzeppelin/contracts/=node_modules/@openzeppelin/contracts/
+@openzeppelin/contracts-upgradeable/=node_modules/@openzeppelin/contracts-upgradeable/
+@prb/test/=node_modules/@prb/test/
+forge-std/=node_modules/forge-std/
+@pendle/core-v2/=node_modules/@pendle/core-v2/
