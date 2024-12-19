@@ -14,12 +14,12 @@ export async function cancelAll() {
 }
 
 export async function cancelSingle() {
-    // Get order with 
+    // Get order with <ORDER_ID>
     const {
         data: orderData
     } = await axios.get<LimitOrderResponse>(LIMIT_ORDER_URL + `/v1/limit-order/${ORDER_ID}`, {});
 
-    // Cancel the first order if available
+    // Cancel the order
     const res = await callSDK(`v1/sdk/${CHAIN_ID}/limit-order/cancel-single`, {
         userAddress: USER_ADDRESS,
         salt: orderData.salt,
