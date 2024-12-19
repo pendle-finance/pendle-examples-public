@@ -1,0 +1,16 @@
+{
+  "name": "backend-api-demo",
+  "version": "1.0.0",
+  "description": "Pendle Backend API Demo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx ts-node ./src/index.ts"
+  },
+  "author": "Manh Cao Duy",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.7.3",
+    "csv-string": "^4.1.1"
+  }
+}
