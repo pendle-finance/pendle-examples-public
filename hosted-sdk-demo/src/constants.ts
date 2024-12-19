@@ -8,3 +8,5 @@ export const YT_ADDRESS = '0x04b7fa1e727d7290d6e24fa9b426d0c940283a95';
 
 export const CHAIN_ID = 1;
 export const RECEIVER_ADDRESS = '<RECEVER_ADDRESS>';
+export const ORDER_ID = '<ORDER_ID>'
+export const USER_ADDRESS = '<USER_ADDRESS>'
