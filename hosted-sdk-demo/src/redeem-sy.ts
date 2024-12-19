@@ -18,5 +18,3 @@ export async function redeemSyToToken() {
     // Send tx
     getSigner().sendTransaction(res.tx);
 }
-
-redeemSyToToken()
