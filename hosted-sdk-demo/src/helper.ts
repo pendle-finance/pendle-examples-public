@@ -2,6 +2,7 @@ import axios from 'axios';
 import { ethers } from 'ethers';
 
 const HOSTED_SDK_URL = 'https://api-v2.pendle.finance/core/';
+export const LIMIT_ORDER_URL = 'https://api-v2.pendle.finance/limit-order/'
 
 type MethodReturnType<Data> = {
     tx: {
