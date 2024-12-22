@@ -8,8 +8,10 @@ import "@pendle/core-v2/contracts/interfaces/IPAllActionV3.sol";
 import "@pendle/core-v2/contracts/interfaces/IPMarket.sol";
 import "../src/StructGen.sol";
 import { AggregatorV2V3Interface as IChainlinkAggregator } from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV2V3Interface.sol";
-import "@pendle/core-v2/contracts/oracles/factory/PendleChainlinkOracleFactory.sol";
-import "@pendle/core-v2/contracts/oracles/factory/PendleChainlinkOracle.sol";
+
+import "@pendle/core-v2/contracts/oracles/PtYtLpOracle/chainlink/PendleChainlinkOracle.sol";
+import "@pendle/core-v2/contracts/oracles/PtYtLpOracle/chainlink/PendleChainlinkOracleWithQuote.sol";
+import "@pendle/core-v2/contracts/oracles/PtYtLpOracle/chainlink/PendleChainlinkOracleFactory.sol";
 
 contract ChainlinkOracleSample2 is PRBTest, StdCheats, StructGen {
   IStandardizedYield public SY;

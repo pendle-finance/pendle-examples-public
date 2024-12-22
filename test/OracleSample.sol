@@ -6,7 +6,8 @@ import { console2 as console } from "forge-std/src/console2.sol";
 import { StdCheats } from "forge-std/src/StdCheats.sol";
 import "@pendle/core-v2/contracts/interfaces/IPAllActionV3.sol";
 import "@pendle/core-v2/contracts/interfaces/IPMarket.sol";
-import "@pendle/core-v2/contracts/oracles/PendlePYLpOracle.sol";
+
+import "@pendle/core-v2/contracts/oracles/PtYtLpOracle/PendlePYLpOracle.sol";
 import "../src/StructGen.sol";
 import { AggregatorV2V3Interface as IChainlinkAggregator } from "@chainlink/contracts/src/v0.8/interfaces/AggregatorV2V3Interface.sol";
 
