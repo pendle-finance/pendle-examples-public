@@ -4,7 +4,7 @@ import { MintPyData } from "./types";
 
 export async function mintPyFromSy() {
     // Use 1 SY to mint PT and YT with 1% slippage
-    const res = await callSDK<MintPyData>(`/v1/sdk/${CHAIN_ID}/mint`, {
+    const resp = await callSDK<MintPyData>(`/v2/sdk/${CHAIN_ID}/mint`, {
         receiver: RECEIVER_ADDRESS,
         yt: YT_ADDRESS,
         slippage: 0.01,
@@ -12,16 +12,17 @@ export async function mintPyFromSy() {
         amountIn: '1000000000000000000',
     });
 
-    console.log('Amount PT & YT Out: ', res.data.amountOut);
-    console.log('Price impact: ', res.data.priceImpact);
+    console.log('Amount PT & YT Out: ', resp.data.data.amountOut);
+    console.log('Price impact: ', resp.data.data.priceImpact);
+    console.log('Computing unit: ', resp.headers['x-computing-unit']);
 
     // Send tx
-    getSigner().sendTransaction(res.tx);
+    // getSigner().sendTransaction(resp.data.tx);
 }
 
 export async function mintPyFromToken() {
     // Use 1 wstETH to mint PT and YT with 1% slippage
-    const res = await callSDK<MintPyData>(`/v1/sdk/${CHAIN_ID}/mint`, {
+    const resp = await callSDK<MintPyData>(`/v2/sdk/${CHAIN_ID}/mint`, {
         receiver: RECEIVER_ADDRESS,
         yt: YT_ADDRESS,
         slippage: 0.01,
@@ -29,9 +30,14 @@ export async function mintPyFromToken() {
         amountIn: '1000000000000000000',
     });
 
-    console.log('Amount PT & YT Out: ', res.data.amountOut);
-    console.log('Price impact: ', res.data.priceImpact);
+    console.log('Amount PT & YT Out: ', resp.data.data.amountOut);
+    console.log('Price impact: ', resp.data.data.priceImpact);
+    console.log('Computing unit: ', resp.headers['x-computing-unit']);
 
     // Send tx
-    getSigner().sendTransaction(res.tx);
+    // getSigner().sendTransaction(resp.data.tx);
 }
+
+
+// mintPyFromSy();
+// mintPyFromToken();

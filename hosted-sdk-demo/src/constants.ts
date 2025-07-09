@@ -7,6 +7,7 @@ export const PT_ADDRESS = '0xb253eff1104802b97ac7e3ac9fdd73aece295a2c';
 export const YT_ADDRESS = '0x04b7fa1e727d7290d6e24fa9b426d0c940283a95';
 
 export const CHAIN_ID = 1;
-export const RECEIVER_ADDRESS = '<RECEVER_ADDRESS>';
+// replace with your own address
+export const RECEIVER_ADDRESS = '0x0000000000000000000000000000000000000001';
 export const ORDER_ID = '<ORDER_ID>'
 export const USER_ADDRESS = '<USER_ADDRESS>'

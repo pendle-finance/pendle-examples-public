@@ -4,7 +4,7 @@ import { RedeemSyData } from "./types";
 
 export async function redeemSyToToken() {
     // Redeem 1 SY to wstETH with 1% slippage
-    const res = await callSDK<RedeemSyData>(`/v1/sdk/${CHAIN_ID}/redeem-sy`, {
+    const resp = await callSDK<RedeemSyData>(`/v2/sdk/${CHAIN_ID}/redeem-sy`, {
         receiver: RECEIVER_ADDRESS,
         slippage: 0.01,
         sy: SY_ADDRESS,
@@ -12,9 +12,12 @@ export async function redeemSyToToken() {
         tokenOut: wstETH,
     });
 
-    console.log('Amount wstETH Out: ', res.data.amountOut);
-    console.log('Price impact: ', res.data.priceImpact);
+    console.log('Amount wstETH Out: ', resp.data.data.amountOut);
+    console.log('Price impact: ', resp.data.data.priceImpact);
+    console.log('Computing unit: ', resp.headers['x-computing-unit']);
 
     // Send tx
-    getSigner().sendTransaction(res.tx);
+    // getSigner().sendTransaction(resp.data.tx);
 }
+
+// redeemSyToToken();

@@ -18,7 +18,7 @@ export async function callSDK<Data>(path: string, params: Record<string, any> = 
         params
     });
 
-    return response.data;
+    return response;
 }
 
 export function getSigner() {

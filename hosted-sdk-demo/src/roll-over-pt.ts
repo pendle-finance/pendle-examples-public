@@ -6,16 +6,19 @@ const eETH_MARKET_ADDRESS = '0xe1f19cbda26b6418b0c8e1ee978a533184496066';
 
 export async function rollOverPt() {
     // Transfer 1 PT eETH to wstETH PT with 1% slippage
-    const res = await callSDK<RollOverPtData>(`/v1/sdk/${CHAIN_ID}/markets/${eETH_MARKET_ADDRESS}/roll-over-pt`, {
+    const resp = await callSDK<RollOverPtData>(`/v2/sdk/${CHAIN_ID}/markets/${eETH_MARKET_ADDRESS}/roll-over-pt`, {
         receiver: RECEIVER_ADDRESS,
         slippage: 0.01,
         dstMarket: MARKET_ADDRESS,
         ptAmount: '1000000000000000000',
     });
 
-    console.log('Amount PT Out: ', res.data.amountPtOut);
-    console.log('Price impact: ', res.data.priceImpact);
+    console.log('Amount PT Out: ', resp.data.data.amountPtOut);
+    console.log('Price impact: ', resp.data.data.priceImpact);
+    console.log('Computing unit: ', resp.headers['x-computing-unit']);
 
     // Send tx
-    getSigner().sendTransaction(res.tx);
+    // getSigner().sendTransaction(resp.data.tx);
 }
+
+// rollOverPt();

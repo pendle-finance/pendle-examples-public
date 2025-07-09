@@ -5,12 +5,12 @@ import { LimitOrderResponse } from "./types";
 
 export async function cancelAll() {
     // Cancel all limit orders on <CHAIN_ID> made by <USER_ADDRESS>
-    const res = await callSDK(`v1/sdk/${CHAIN_ID}/limit-order/cancel-all`, {
+    const resp = await callSDK(`v1/sdk/${CHAIN_ID}/limit-order/cancel-all`, {
         userAddress: USER_ADDRESS,
     });
 
     // Send tx
-    getSigner().sendTransaction(res.tx);
+    // getSigner().sendTransaction(resp.data.tx);
 }
 
 export async function cancelSingle() {
@@ -20,7 +20,7 @@ export async function cancelSingle() {
     } = await axios.get<LimitOrderResponse>(LIMIT_ORDER_URL + `/v1/limit-order/${ORDER_ID}`, {});
 
     // Cancel the order
-    const res = await callSDK(`v1/sdk/${CHAIN_ID}/limit-order/cancel-single`, {
+    const resp = await callSDK(`v1/sdk/${CHAIN_ID}/limit-order/cancel-single`, {
         userAddress: USER_ADDRESS,
         salt: orderData.salt,
         expiry: orderData.expiry,
@@ -37,5 +37,9 @@ export async function cancelSingle() {
     });
 
     // Send tx
-    getSigner().sendTransaction(res.tx);
+    // getSigner().sendTransaction(resp.data.tx);
 }
+
+
+// cancelAll();
+// cancelSingle();
