@@ -4,7 +4,7 @@ import { MintSyData } from "./types";
 
 export async function mintSyFromToken() {
     // Use 1 wstETH to mint SY with 1% slippage
-    const res = await callSDK<MintSyData>(`/v1/sdk/${CHAIN_ID}/mint-sy`, {
+    const resp = await callSDK<MintSyData>(`/v2/sdk/${CHAIN_ID}/mint-sy`, {
         receiver: RECEIVER_ADDRESS,
         sy: SY_ADDRESS,
         slippage: 0.01,
@@ -12,9 +12,12 @@ export async function mintSyFromToken() {
         amountIn: '1000000000000000000',
     });
 
-    console.log('Amount SY Out: ', res.data.amountOut);
-    console.log('Price impact: ', res.data.priceImpact);
+    console.log('Amount SY Out: ', resp.data.data.amountOut);
+    console.log('Price impact: ', resp.data.data.priceImpact);
+    console.log('Computing unit: ', resp.headers['x-computing-unit']);
 
     // Send tx
-    getSigner().sendTransaction(res.tx);
+    // getSigner().sendTransaction(resp.data.tx);
 }
+
+mintSyFromToken();

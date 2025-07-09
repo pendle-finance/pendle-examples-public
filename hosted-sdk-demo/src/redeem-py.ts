@@ -4,7 +4,7 @@ import { RedeemPyData } from "./types";
 
 export async function redeemPyToSy() {
     // Redeem 1 PT and 1 YT to SY with 1% slippage
-    const res = await callSDK<RedeemPyData>(`/v1/sdk/${CHAIN_ID}/redeem`, {
+    const resp = await callSDK<RedeemPyData>(`/v2/sdk/${CHAIN_ID}/redeem`, {
         receiver: RECEIVER_ADDRESS,
         slippage: 0.01,
         yt: YT_ADDRESS,
@@ -12,16 +12,17 @@ export async function redeemPyToSy() {
         tokenOut: SY_ADDRESS,
     });
 
-    console.log('Amount SY Out: ', res.data.amountOut);
-    console.log('Price impact: ', res.data.priceImpact);
+    console.log('Amount SY Out: ', resp.data.data.amountOut);
+    console.log('Price impact: ', resp.data.data.priceImpact);
+    console.log('Computing unit: ', resp.headers['x-computing-unit']);
 
     // Send tx
-    getSigner().sendTransaction(res.tx);
+    // getSigner().sendTransaction(resp.data.tx);
 }
 
 export async function redeemPyToToken() {
     // Redeem 1 PT and 1 YT to wstETH with 1% slippage
-    const res = await callSDK<RedeemPyData>(`/v1/sdk/${CHAIN_ID}/redeem`, {
+    const resp = await callSDK<RedeemPyData>(`/v2/sdk/${CHAIN_ID}/redeem`, {
         receiver: RECEIVER_ADDRESS,
         slippage: 0.01,
         yt: YT_ADDRESS,
@@ -29,9 +30,13 @@ export async function redeemPyToToken() {
         tokenOut: wstETH,
     });
 
-    console.log('Amount wstETH Out: ', res.data.amountOut);
-    console.log('Price impact: ', res.data.priceImpact);
+    console.log('Amount wstETH Out: ', resp.data.data.amountOut);
+    console.log('Price impact: ', resp.data.data.priceImpact);
+    console.log('Computing unit: ', resp.headers['x-computing-unit']);
 
     // Send tx
-    getSigner().sendTransaction(res.tx);
+    // getSigner().sendTransaction(resp.data.tx);
 }
+
+// redeemPyToSy();
+// redeemPyToToken();
