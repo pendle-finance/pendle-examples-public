@@ -1,53 +1,46 @@
-import { CHAIN_ID, MARKET_ADDRESS, RECEIVER_ADDRESS } from "./constants";
-import { callSDK, getSigner } from "./helper";
-import { TransferLiquidityData } from "./types";
+import { CHAIN_ID, MARKET_ADDRESS, RECEIVER_ADDRESS, YT_ADDRESS } from "./constants";
+import { callAllRouterActionsAPI, getSigner, printRouterActionsOutput } from "./helper";
 
-const eETH_MARKET_ADDRESS = '0x7d372819240d14fb477f17b964f95f33beb4c704';
+const sUSDe_MARKET_ADDRESS = '0xa36b60a14a1a5247912584768c6e53e1a269a9f7';
+const sUSDe_PT_ADDRESS = '0x9f56094c450763769ba0ea9fe2876070c0fd5f77';
+const sUSDe_YT_ADDRESS = '0x029d6247adb0a57138c62e3019c92d3dfc9c1840';
 
 export async function transferLiquidity() {
-    // Transfer 1 LP from eETH pool to wstETH pool with 1% slippage
-    const resp = await callSDK<TransferLiquidityData>(`/v2/sdk/${CHAIN_ID}/markets/${eETH_MARKET_ADDRESS}/transfer-liquidity`, {
+    // Transfer 1 LP + 1 PT + 1 YT from sUSDe pool to wstETH pool with 1% slippage
+    const resp = await callAllRouterActionsAPI(CHAIN_ID, {
+        tokensIn: `${sUSDe_MARKET_ADDRESS},${sUSDe_PT_ADDRESS},${sUSDe_YT_ADDRESS}`, // LP + PT + YT
+        amountsIn: '1000000000000000000,1000000000000000000,1000000000000000000',
+        tokensOut: MARKET_ADDRESS, // Target LP
         receiver: RECEIVER_ADDRESS,
         slippage: 0.01,
-        dstMarket: MARKET_ADDRESS,
-        lpAmount: '1000000000000000000',
-        ptAmount: '0',
-        ytAmount: '0',
-        // if not specified, it will use all aggregators, which costs more computing unit
+        enableAggregator: true,
         aggregators: 'kyberswap',
     });
 
-    console.log('Amount LP Out: ', resp.data.data.amountLpOut);
-    console.log('Price impact: ', resp.data.data.priceImpact);
-    console.log('Computing unit: ', resp.headers['x-computing-unit']);
+    printRouterActionsOutput(resp);
 
     // Send tx
-    // getSigner().sendTransaction(resp.data.tx);
+    // getSigner().sendTransaction(resp.data.routes[0].tx);
 }
 
 export async function transferLiquidityKeepYt() {
-    // Transfer 1 LP from eETH pool to wstETH pool (zero price impact mode) with 1% slippage
-    const resp = await callSDK<TransferLiquidityData>(`/v2/sdk/${CHAIN_ID}/markets/${eETH_MARKET_ADDRESS}/transfer-liquidity`, {
+    // Transfer 1 LP from sUSDe pool to wstETH pool (zero price impact mode) with 1% slippage
+    const resp = await callAllRouterActionsAPI(CHAIN_ID, {
+        tokensIn: `${sUSDe_MARKET_ADDRESS},${sUSDe_PT_ADDRESS},${sUSDe_YT_ADDRESS}`, // LP + PT + YT
+        amountsIn: '1000000000000000000,0,0',
+        tokensOut: `${MARKET_ADDRESS},${YT_ADDRESS}`, // Target LP + YT (ZPI mode)
         receiver: RECEIVER_ADDRESS,
         slippage: 0.01,
-        dstMarket: MARKET_ADDRESS,
-        lpAmount: '1000000000000000000',
-        ptAmount: '0',
-        ytAmount: '0',
-        zpi: true,
-        // if not specified, it will use all aggregators, which costs more computing unit
+        enableAggregator: true,
         aggregators: 'kyberswap',
     });
 
-    console.log('Amount LP Out: ', resp.data.data.amountLpOut);
-    console.log('Amount YT Out: ', resp.data.data.amountYtOut);
-    console.log('Price impact: ', resp.data.data.priceImpact);
-    console.log('Computing unit: ', resp.headers['x-computing-unit']);
+    printRouterActionsOutput(resp);
 
     // Send tx
-    // getSigner().sendTransaction(res.tx);
+    // getSigner().sendTransaction(resp.data.routes[0].tx);
 }
 
 
-transferLiquidity();
-transferLiquidityKeepYt();
+// transferLiquidity();
+// transferLiquidityKeepYt();

@@ -1,23 +1,20 @@
 import { CHAIN_ID, RECEIVER_ADDRESS, SY_ADDRESS, wstETH } from "./constants";
-import { callSDK, getSigner } from "./helper";
-import { RedeemSyData } from "./types";
+import { callAllRouterActionsAPI, getSigner, printRouterActionsOutput } from "./helper";
 
 export async function redeemSyToToken() {
     // Redeem 1 SY to wstETH with 1% slippage
-    const resp = await callSDK<RedeemSyData>(`/v2/sdk/${CHAIN_ID}/redeem-sy`, {
+    const resp = await callAllRouterActionsAPI(CHAIN_ID, {
+        tokensIn: SY_ADDRESS,
+        amountsIn: '1000000000000000000',
+        tokensOut: wstETH,
         receiver: RECEIVER_ADDRESS,
         slippage: 0.01,
-        sy: SY_ADDRESS,
-        amountIn: '1000000000000000000',
-        tokenOut: wstETH,
     });
 
-    console.log('Amount wstETH Out: ', resp.data.data.amountOut);
-    console.log('Price impact: ', resp.data.data.priceImpact);
-    console.log('Computing unit: ', resp.headers['x-computing-unit']);
+    printRouterActionsOutput(resp);
 
     // Send tx
-    // getSigner().sendTransaction(resp.data.tx);
+    // getSigner().sendTransaction(resp.data.routes[0].tx);
 }
 
 // redeemSyToToken();

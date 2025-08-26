@@ -1,7 +1,8 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { ethers } from 'ethers';
 
-const HOSTED_SDK_URL = 'https://api-v2.pendle.finance/core/';
+// const HOSTED_SDK_URL = 'https://api-v2.pendle.finance/core/';
+const HOSTED_SDK_URL = 'http://localhost:9000/';
 export const LIMIT_ORDER_URL = 'https://api-v2.pendle.finance/limit-order/'
 
 type MethodReturnType<Data> = {
@@ -13,12 +14,69 @@ type MethodReturnType<Data> = {
     data: Data;
 };
 
+type TokenAmountResponse = {
+    token: string;
+    amount: string;
+};
+
+type ContractParamInfo = {
+    method: string;
+    contractCallParamsName: string[];
+    contractCallParams: any[];
+};
+
+type TransactionDto = {
+    data: string;
+    to: string;
+    from: string;
+    value: string;
+};
+
+type RouterActionsData = {
+    priceImpact: number;
+    impliedApy?: any;
+    effectiveApy?: number;
+    paramsBreakdown?: any;
+};
+
+type RouteResponse = {
+    contractParamInfo: ContractParamInfo;
+    tx: TransactionDto;
+    outputs: TokenAmountResponse[];
+    data: RouterActionsData;
+};
+
+type RouterActionsResponse = {
+    action: string;
+    inputs: TokenAmountResponse[];
+    requiredApprovals?: TokenAmountResponse[];
+    routes: RouteResponse[];
+};
+
 export async function callSDK<Data>(path: string, params: Record<string, any> = {}) {
     const response = await axios.get<MethodReturnType<Data>>(HOSTED_SDK_URL + path, {
         params
     });
 
     return response;
+}
+
+export async function callAllRouterActionsAPI(chainId: number, params: Record<string, any> = {}) {
+    const response = await axios.get<RouterActionsResponse>(HOSTED_SDK_URL + `v1/sdk/${chainId}/router-actions`, {
+        params
+    });
+
+    return response;
+}
+
+export function printRouterActionsOutput(axiosResponse: AxiosResponse<RouterActionsResponse>) {
+    const resp = axiosResponse.data;
+    console.log('Action: ', resp.action);
+    console.log('Method: ', resp.routes[0].contractParamInfo.method);
+    console.log('Outputs: ', resp.routes[0].outputs);
+    console.log('Price impact: ', resp.routes[0].data.priceImpact);
+    console.log('Computing unit: ', axiosResponse.headers['x-computing-unit']);
+    console.log('\n--------------------------------\n');
 }
 
 export function getSigner() {
