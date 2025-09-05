@@ -1,8 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { ethers } from 'ethers';
 
-// const HOSTED_SDK_URL = 'https://api-v2.pendle.finance/core/';
-const HOSTED_SDK_URL = 'http://localhost:9000/';
+const HOSTED_SDK_URL = 'https://api-v2.pendle.finance/core/';
 export const LIMIT_ORDER_URL = 'https://api-v2.pendle.finance/limit-order/'
 
 type MethodReturnType<Data> = {
@@ -62,7 +61,7 @@ export async function callSDK<Data>(path: string, params: Record<string, any> = 
 }
 
 export async function callAllRouterActionsAPI(chainId: number, params: Record<string, any> = {}) {
-    const response = await axios.get<RouterActionsResponse>(HOSTED_SDK_URL + `v1/sdk/${chainId}/router-actions`, {
+    const response = await axios.get<RouterActionsResponse>(HOSTED_SDK_URL + `v2/sdk/${chainId}/convert`, {
         params
     });
 

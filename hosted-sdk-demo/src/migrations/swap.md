@@ -35,4 +35,4 @@ Example: Swap 1 stETH for PT.
 
 Old query: `https://api-v2.pendle.finance/core/v2/sdk/1/markets/0x34280882267ffa6383b363e278b027be083bbe3b/swap?receiver=0xbD525dfF925DF9c063C77B29d5Eec8f977B79476&slippage=0.001&tokenIn=0xae7ab96520de3a18e5e111b5eaab095312d7fe84&amountIn=1000000000000000000&tokenOut=0xb253eff1104802b97ac7e3ac9fdd73aece295a2c`
 
-New query: `http://localhost:9000/v1/sdk/1/router-actions?receiver=0xbD525dfF925DF9c063C77B29d5Eec8f977B79476&slippage=0.001&tokensIn=0xae7ab96520de3a18e5e111b5eaab095312d7fe84&amountsIn=1000000000000000000&tokensOut=0xb253eff1104802b97ac7e3ac9fdd73aece295a2c`
+New query: `https://api-v2.pendle.finance/core/v2/sdk/1/convert?receiver=0xbD525dfF925DF9c063C77B29d5Eec8f977B79476&slippage=0.001&tokensIn=0xae7ab96520de3a18e5e111b5eaab095312d7fe84&amountsIn=1000000000000000000&tokensOut=0xb253eff1104802b97ac7e3ac9fdd73aece295a2c`

@@ -36,7 +36,7 @@ Example: Add liquidity 1 stETH to the pool.
 
 Old query: `https://api-v2.pendle.finance/core/v1/sdk/1/markets/0x34280882267ffa6383b363e278b027be083bbe3b/add-liquidity?receiver=0xbD525dfF925DF9c063C77B29d5Eec8f977B79476&slippage=0.001&tokenIn=0xae7ab96520de3a18e5e111b5eaab095312d7fe84&amountIn=1000000000000000000&zpi=false`
 
-New query: `http://localhost:9000/v1/sdk/1/router-actions?receiver=0xbD525dfF925DF9c063C77B29d5Eec8f977B79476&slippage=0.001&tokensIn=0xae7ab96520de3a18e5e111b5eaab095312d7fe84&amountsIn=1000000000000000000&tokensOut=0x34280882267ffa6383b363e278b027be083bbe3b`
+New query: `https://api-v2.pendle.finance/core/v2/sdk/1/convert?receiver=0xbD525dfF925DF9c063C77B29d5Eec8f977B79476&slippage=0.001&tokensIn=0xae7ab96520de3a18e5e111b5eaab095312d7fe84&amountsIn=1000000000000000000&tokensOut=0x34280882267ffa6383b363e278b027be083bbe3b`
 
 ## AddLiquidity ZPI
 
@@ -63,4 +63,4 @@ Example: Add liquidity 1 stETH to the pool, keep YT.
 
 Old query: `https://api-v2.pendle.finance/core/v1/sdk/1/markets/0x34280882267ffa6383b363e278b027be083bbe3b/add-liquidity?receiver=0xbD525dfF925DF9c063C77B29d5Eec8f977B79476&slippage=0.001&tokenIn=0xae7ab96520de3a18e5e111b5eaab095312d7fe84&amountIn=1000000000000000000&zpi=true`
 
-New query: `http://localhost:9000/v1/sdk/1/router-actions?receiver=0xbD525dfF925DF9c063C77B29d5Eec8f977B79476&slippage=0.001&tokensIn=0xae7ab96520de3a18e5e111b5eaab095312d7fe84&amountsIn=1000000000000000000&tokensOut=0x34280882267ffa6383b363e278b027be083bbe3b,0x04b7fa1e727d7290d6e24fa9b426d0c940283a95`
+New query: `https://api-v2.pendle.finance/core/v2/sdk/1/convert?receiver=0xbD525dfF925DF9c063C77B29d5Eec8f977B79476&slippage=0.001&tokensIn=0xae7ab96520de3a18e5e111b5eaab095312d7fe84&amountsIn=1000000000000000000&tokensOut=0x34280882267ffa6383b363e278b027be083bbe3b,0x04b7fa1e727d7290d6e24fa9b426d0c940283a95`
