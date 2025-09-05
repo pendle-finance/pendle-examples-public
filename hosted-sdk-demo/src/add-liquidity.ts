@@ -1,94 +1,84 @@
-import { CHAIN_ID, MARKET_ADDRESS, PT_ADDRESS, RECEIVER_ADDRESS, SY_ADDRESS, USDC, wstETH } from "./constants";
-import { callSDK, getSigner } from "./helper";
-import { AddLiquidityData } from "./types";
+import { CHAIN_ID, MARKET_ADDRESS, PT_ADDRESS, RECEIVER_ADDRESS, SY_ADDRESS, USDC, wstETH, YT_ADDRESS } from "./constants";
+import { callConvertAPI, getSigner, printConvertOutput } from "./helper";
 
 export async function addLiquiditySinglePt() {
-    // Use 1 PT to add liquidity to wstETH pool with 1% slippage
-    const resp = await callSDK<AddLiquidityData>(`/v2/sdk/${CHAIN_ID}/markets/${MARKET_ADDRESS}/add-liquidity`, {
+    // Add liquidity with 1 PT to wstETH pool with 1% slippage
+    const resp = await callConvertAPI(CHAIN_ID, {
+        tokensIn: PT_ADDRESS,
+        amountsIn: '1000000000000000000',
+        tokensOut: MARKET_ADDRESS, // LP token address
         receiver: RECEIVER_ADDRESS,
         slippage: 0.01,
-        tokenIn: PT_ADDRESS,
-        amountIn: '1000000000000000000'
     });
 
-    console.log('Amount LP Out: ', resp.data.data.amountLpOut);
-    console.log('Price impact: ', resp.data.data.priceImpact);
-    console.log('Computing unit: ', resp.headers['x-computing-unit']);
+    printConvertOutput(resp);
 
     // Send tx
-    // getSigner().sendTransaction(resp.data.tx);
+    // getSigner().sendTransaction(resp.data.routes[0].tx);
 }
 
 export async function addLiquiditySingleSy() {
-    // Use 1 SY to add liquidity to wstETH pool with 1% slippage
-    const resp = await callSDK<AddLiquidityData>(`/v2/sdk/${CHAIN_ID}/markets/${MARKET_ADDRESS}/add-liquidity`, {
+    // Add liquidity with 1 SY to wstETH pool with 1% slippage
+    const resp = await callConvertAPI(CHAIN_ID, {
+        tokensIn: SY_ADDRESS,
+        amountsIn: '1000000000000000000',
+        tokensOut: MARKET_ADDRESS, // LP token address
         receiver: RECEIVER_ADDRESS,
         slippage: 0.01,
-        tokenIn: SY_ADDRESS,
-        amountIn: '1000000000000000000',
     });
 
-    console.log('Amount LP Out: ', resp.data.data.amountLpOut);
-    console.log('Price impact: ', resp.data.data.priceImpact);
-    console.log('Computing unit: ', resp.headers['x-computing-unit']);
+    printConvertOutput(resp);
 
     // Send tx
-    // getSigner().sendTransaction(resp.data.tx);
+    // getSigner().sendTransaction(resp.data.routes[0].tx);
 }
 
 export async function addLiquiditySingleSyKeepYt() {
-    // Use 1 SY to add liquidity to wstETH pool (zero price impact mode) with 1% slippage
-    const resp = await callSDK<AddLiquidityData>(`/v2/sdk/${CHAIN_ID}/markets/${MARKET_ADDRESS}/add-liquidity`, {
+    // Add liquidity with 1 SY to wstETH pool (zero price impact mode) with 1% slippage
+    const resp = await callConvertAPI(CHAIN_ID, {
+        tokensIn: SY_ADDRESS,
+        amountsIn: '1000000000000000000',
+        tokensOut: `${MARKET_ADDRESS},${YT_ADDRESS}`, // LP + YT (ZPI mode)
         receiver: RECEIVER_ADDRESS,
         slippage: 0.01,
-        tokenIn: SY_ADDRESS,
-        amountIn: '1000000000000000000',
-        zpi: true,
     });
 
-    console.log('Amount LP Out: ', resp.data.data.amountLpOut);
-    console.log('Amount YT Out: ', resp.data.data.amountYtOut);
-    console.log('Price impact: ', resp.data.data.priceImpact);
-    console.log('Computing unit: ', resp.headers['x-computing-unit']);
+    printConvertOutput(resp);
 
     // Send tx
-    // getSigner().sendTransaction(resp.data.tx);
+    // getSigner().sendTransaction(resp.data.routes[0].tx);
 }
 
 export async function addLiquiditySingleToken() {
-    // Use 1 wstETH to add liquidity to wstETH pool with 1% slippage
-    const resp = await callSDK<AddLiquidityData>(`/v2/sdk/${CHAIN_ID}/markets/${MARKET_ADDRESS}/add-liquidity`, {
+    // Add liquidity with 1 wstETH to wstETH pool with 1% slippage
+    const resp = await callConvertAPI(CHAIN_ID, {
+        tokensIn: wstETH,
+        amountsIn: '1000000000000000000',
+        tokensOut: MARKET_ADDRESS, // LP token address
         receiver: RECEIVER_ADDRESS,
         slippage: 0.01,
-        tokenIn: wstETH,
-        amountIn: '1000000000000000000'
     });
 
-    console.log('Amount LP Out: ', resp.data.data.amountLpOut);
-    console.log('Price impact: ', resp.data.data.priceImpact);
-    console.log('Computing unit: ', resp.headers['x-computing-unit']);
+    printConvertOutput(resp);
 
     // Send tx
-    // getSigner().sendTransaction(resp.data.tx);
+    // getSigner().sendTransaction(resp.data.routes[0].tx);
 }
 
 export async function addLiquiditySingleTokenKeepYt() {
-    // Use 1 wstETH to add liquidity to wstETH pool (zero price impact mode) with 1% slippage
-    const resp = await callSDK<AddLiquidityData>(`/v2/sdk/${CHAIN_ID}/markets/${MARKET_ADDRESS}/add-liquidity`, {
+    // Add liquidity with 1 wstETH to wstETH pool (zero price impact mode) with 1% slippage
+    const resp = await callConvertAPI(CHAIN_ID, {
+        tokensIn: wstETH,
+        amountsIn: '1000000000000000000',
+        tokensOut: `${MARKET_ADDRESS},${YT_ADDRESS}`, // LP + YT (ZPI mode)
         receiver: RECEIVER_ADDRESS,
         slippage: 0.01,
-        tokenIn: wstETH,
-        amountIn: '1000000000000000000',
-        zpi: true,
     });
 
-    console.log('Amount LP Out: ', resp.data.data.amountLpOut);
-    console.log('Amount YT Out: ', resp.data.data.amountYtOut);
-    console.log('Price impact: ', resp.data.data.priceImpact);
-    console.log('Computing unit: ', resp.headers['x-computing-unit']);
+    printConvertOutput(resp);
 
     // Send tx
-    // getSigner().sendTransaction(resp.data.tx);
+    // getSigner().sendTransaction(resp.data.routes[0].tx);
 }
 
 

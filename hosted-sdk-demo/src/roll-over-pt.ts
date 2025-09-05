@@ -1,24 +1,23 @@
-import { CHAIN_ID, MARKET_ADDRESS, RECEIVER_ADDRESS } from "./constants";
-import { callSDK, getSigner } from "./helper";
-import { RollOverPtData } from "./types";
+import { CHAIN_ID, MARKET_ADDRESS, PT_ADDRESS, RECEIVER_ADDRESS } from "./constants";
+import { callConvertAPI, getSigner, printConvertOutput } from "./helper";
 
-const eETH_MARKET_ADDRESS = '0xe1f19cbda26b6418b0c8e1ee978a533184496066';
+const sUSDe_PT_ADDRESS = '0x9f56094c450763769ba0ea9fe2876070c0fd5f77';
 
 export async function rollOverPt() {
-    // Transfer 1 PT eETH to wstETH PT with 1% slippage
-    const resp = await callSDK<RollOverPtData>(`/v2/sdk/${CHAIN_ID}/markets/${eETH_MARKET_ADDRESS}/roll-over-pt`, {
+    // Roll over 1 sUSDe PT to wstETH PT with 1% slippage
+    const resp = await callConvertAPI(CHAIN_ID, {
+        tokensIn: sUSDe_PT_ADDRESS,
+        amountsIn: '1000000000000000000',
+        tokensOut: PT_ADDRESS, // Target PT
         receiver: RECEIVER_ADDRESS,
+        enableAggregator: true,
         slippage: 0.01,
-        dstMarket: MARKET_ADDRESS,
-        ptAmount: '1000000000000000000',
     });
 
-    console.log('Amount PT Out: ', resp.data.data.amountPtOut);
-    console.log('Price impact: ', resp.data.data.priceImpact);
-    console.log('Computing unit: ', resp.headers['x-computing-unit']);
+    printConvertOutput(resp);
 
     // Send tx
-    // getSigner().sendTransaction(resp.data.tx);
+    // getSigner().sendTransaction(resp.data.routes[0].tx);
 }
 
 // rollOverPt();

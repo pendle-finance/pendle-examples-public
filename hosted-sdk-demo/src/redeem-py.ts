@@ -1,41 +1,36 @@
-import { CHAIN_ID, RECEIVER_ADDRESS, SY_ADDRESS, wstETH, YT_ADDRESS } from "./constants";
-import { callSDK, getSigner } from "./helper";
-import { RedeemPyData } from "./types";
+import { CHAIN_ID, PT_ADDRESS, RECEIVER_ADDRESS, SY_ADDRESS, wstETH, YT_ADDRESS } from "./constants";
+import { callConvertAPI, getSigner, printConvertOutput } from "./helper";
 
 export async function redeemPyToSy() {
     // Redeem 1 PT and 1 YT to SY with 1% slippage
-    const resp = await callSDK<RedeemPyData>(`/v2/sdk/${CHAIN_ID}/redeem`, {
+    const resp = await callConvertAPI(CHAIN_ID, {
+        tokensIn: `${PT_ADDRESS},${YT_ADDRESS}`,
+        amountsIn: '1000000000000000000,1000000000000000000',
+        tokensOut: SY_ADDRESS,
         receiver: RECEIVER_ADDRESS,
         slippage: 0.01,
-        yt: YT_ADDRESS,
-        amountIn: '1000000000000000000',
-        tokenOut: SY_ADDRESS,
     });
 
-    console.log('Amount SY Out: ', resp.data.data.amountOut);
-    console.log('Price impact: ', resp.data.data.priceImpact);
-    console.log('Computing unit: ', resp.headers['x-computing-unit']);
+    printConvertOutput(resp);
 
     // Send tx
-    // getSigner().sendTransaction(resp.data.tx);
+    // getSigner().sendTransaction(resp.data.routes[0].tx);
 }
 
 export async function redeemPyToToken() {
     // Redeem 1 PT and 1 YT to wstETH with 1% slippage
-    const resp = await callSDK<RedeemPyData>(`/v2/sdk/${CHAIN_ID}/redeem`, {
+    const resp = await callConvertAPI(CHAIN_ID, {
+        tokensIn: `${PT_ADDRESS},${YT_ADDRESS}`,
+        amountsIn: '1000000000000000000,1000000000000000000',
+        tokensOut: wstETH,
         receiver: RECEIVER_ADDRESS,
         slippage: 0.01,
-        yt: YT_ADDRESS,
-        amountIn: '1000000000000000000',
-        tokenOut: wstETH,
     });
 
-    console.log('Amount wstETH Out: ', resp.data.data.amountOut);
-    console.log('Price impact: ', resp.data.data.priceImpact);
-    console.log('Computing unit: ', resp.headers['x-computing-unit']);
+    printConvertOutput(resp);
 
     // Send tx
-    // getSigner().sendTransaction(resp.data.tx);
+    // getSigner().sendTransaction(resp.data.routes[0].tx);
 }
 
 // redeemPyToSy();
