@@ -1,9 +1,9 @@
 import { CHAIN_ID, MARKET_ADDRESS, PT_ADDRESS, RECEIVER_ADDRESS, SY_ADDRESS, wstETH } from "./constants";
-import { callAllRouterActionsAPI, getSigner, printRouterActionsOutput } from "./helper";
+import { callConvertAPI, getSigner, printConvertOutput } from "./helper";
 
 export async function removeLiquidityDualSyAndPt() {
     // Remove liquidity dual: 1 LP to SY and PT with 1% slippage
-    const resp = await callAllRouterActionsAPI(CHAIN_ID, {
+    const resp = await callConvertAPI(CHAIN_ID, {
         tokensIn: MARKET_ADDRESS, // LP token address
         amountsIn: '1000000000000000000',
         tokensOut: `${PT_ADDRESS},${SY_ADDRESS}`, // PT + SY
@@ -11,7 +11,7 @@ export async function removeLiquidityDualSyAndPt() {
         slippage: 0.01,
     });
 
-    printRouterActionsOutput(resp);
+    printConvertOutput(resp);
 
     // Send tx
     // getSigner().sendTransaction(resp.data.routes[0].tx);
@@ -19,7 +19,7 @@ export async function removeLiquidityDualSyAndPt() {
 
 export async function removeLiquidityDualTokenAndPt() {
     // Remove liquidity dual: 1 LP to wstETH and PT with 1% slippage
-    const resp = await callAllRouterActionsAPI(CHAIN_ID, {
+    const resp = await callConvertAPI(CHAIN_ID, {
         tokensIn: MARKET_ADDRESS, // LP token address
         amountsIn: '1000000000000000000',
         tokensOut: `${PT_ADDRESS},${wstETH}`, // PT + wstETH
@@ -27,7 +27,7 @@ export async function removeLiquidityDualTokenAndPt() {
         slippage: 0.01,
     });
 
-    printRouterActionsOutput(resp);
+    printConvertOutput(resp);
 
     // Send tx
     // getSigner().sendTransaction(resp.data.routes[0].tx);

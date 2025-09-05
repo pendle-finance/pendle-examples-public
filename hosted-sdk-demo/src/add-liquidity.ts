@@ -1,9 +1,9 @@
 import { CHAIN_ID, MARKET_ADDRESS, PT_ADDRESS, RECEIVER_ADDRESS, SY_ADDRESS, USDC, wstETH, YT_ADDRESS } from "./constants";
-import { callAllRouterActionsAPI, getSigner, printRouterActionsOutput } from "./helper";
+import { callConvertAPI, getSigner, printConvertOutput } from "./helper";
 
 export async function addLiquiditySinglePt() {
     // Add liquidity with 1 PT to wstETH pool with 1% slippage
-    const resp = await callAllRouterActionsAPI(CHAIN_ID, {
+    const resp = await callConvertAPI(CHAIN_ID, {
         tokensIn: PT_ADDRESS,
         amountsIn: '1000000000000000000',
         tokensOut: MARKET_ADDRESS, // LP token address
@@ -11,7 +11,7 @@ export async function addLiquiditySinglePt() {
         slippage: 0.01,
     });
 
-    printRouterActionsOutput(resp);
+    printConvertOutput(resp);
 
     // Send tx
     // getSigner().sendTransaction(resp.data.routes[0].tx);
@@ -19,7 +19,7 @@ export async function addLiquiditySinglePt() {
 
 export async function addLiquiditySingleSy() {
     // Add liquidity with 1 SY to wstETH pool with 1% slippage
-    const resp = await callAllRouterActionsAPI(CHAIN_ID, {
+    const resp = await callConvertAPI(CHAIN_ID, {
         tokensIn: SY_ADDRESS,
         amountsIn: '1000000000000000000',
         tokensOut: MARKET_ADDRESS, // LP token address
@@ -27,7 +27,7 @@ export async function addLiquiditySingleSy() {
         slippage: 0.01,
     });
 
-    printRouterActionsOutput(resp);
+    printConvertOutput(resp);
 
     // Send tx
     // getSigner().sendTransaction(resp.data.routes[0].tx);
@@ -35,7 +35,7 @@ export async function addLiquiditySingleSy() {
 
 export async function addLiquiditySingleSyKeepYt() {
     // Add liquidity with 1 SY to wstETH pool (zero price impact mode) with 1% slippage
-    const resp = await callAllRouterActionsAPI(CHAIN_ID, {
+    const resp = await callConvertAPI(CHAIN_ID, {
         tokensIn: SY_ADDRESS,
         amountsIn: '1000000000000000000',
         tokensOut: `${MARKET_ADDRESS},${YT_ADDRESS}`, // LP + YT (ZPI mode)
@@ -43,7 +43,7 @@ export async function addLiquiditySingleSyKeepYt() {
         slippage: 0.01,
     });
 
-    printRouterActionsOutput(resp);
+    printConvertOutput(resp);
 
     // Send tx
     // getSigner().sendTransaction(resp.data.routes[0].tx);
@@ -51,7 +51,7 @@ export async function addLiquiditySingleSyKeepYt() {
 
 export async function addLiquiditySingleToken() {
     // Add liquidity with 1 wstETH to wstETH pool with 1% slippage
-    const resp = await callAllRouterActionsAPI(CHAIN_ID, {
+    const resp = await callConvertAPI(CHAIN_ID, {
         tokensIn: wstETH,
         amountsIn: '1000000000000000000',
         tokensOut: MARKET_ADDRESS, // LP token address
@@ -59,7 +59,7 @@ export async function addLiquiditySingleToken() {
         slippage: 0.01,
     });
 
-    printRouterActionsOutput(resp);
+    printConvertOutput(resp);
 
     // Send tx
     // getSigner().sendTransaction(resp.data.routes[0].tx);
@@ -67,7 +67,7 @@ export async function addLiquiditySingleToken() {
 
 export async function addLiquiditySingleTokenKeepYt() {
     // Add liquidity with 1 wstETH to wstETH pool (zero price impact mode) with 1% slippage
-    const resp = await callAllRouterActionsAPI(CHAIN_ID, {
+    const resp = await callConvertAPI(CHAIN_ID, {
         tokensIn: wstETH,
         amountsIn: '1000000000000000000',
         tokensOut: `${MARKET_ADDRESS},${YT_ADDRESS}`, // LP + YT (ZPI mode)
@@ -75,7 +75,7 @@ export async function addLiquiditySingleTokenKeepYt() {
         slippage: 0.01,
     });
 
-    printRouterActionsOutput(resp);
+    printConvertOutput(resp);
 
     // Send tx
     // getSigner().sendTransaction(resp.data.routes[0].tx);

@@ -1,9 +1,9 @@
 import { CHAIN_ID, PT_ADDRESS, RECEIVER_ADDRESS, SY_ADDRESS, USDC, wstETH, YT_ADDRESS } from "./constants";
-import { callAllRouterActionsAPI, getSigner, printRouterActionsOutput } from "./helper";
+import { callConvertAPI, getSigner, printConvertOutput } from "./helper";
 
 export async function swapPtToSy() {
     // Swap 1 PT to SY in wstETH market with 1% slippage
-    const resp = await callAllRouterActionsAPI(CHAIN_ID, {
+    const resp = await callConvertAPI(CHAIN_ID, {
         tokensIn: PT_ADDRESS,
         amountsIn: '1000000000000000000',
         tokensOut: SY_ADDRESS,
@@ -11,7 +11,7 @@ export async function swapPtToSy() {
         slippage: 0.01,
     });
 
-    printRouterActionsOutput(resp);
+    printConvertOutput(resp);
 
     // Send tx
     // getSigner().sendTransaction(resp.data.routes[0].tx);
@@ -19,7 +19,7 @@ export async function swapPtToSy() {
 
 export async function swapPtToToken() {
     // Swap 1 PT to wstETH in wstETH market with 1% slippage
-    const resp = await callAllRouterActionsAPI(CHAIN_ID, {
+    const resp = await callConvertAPI(CHAIN_ID, {
         tokensIn: PT_ADDRESS,
         amountsIn: '1000000000000000000',
         tokensOut: wstETH,
@@ -27,7 +27,7 @@ export async function swapPtToToken() {
         slippage: 0.01,
     });
 
-    printRouterActionsOutput(resp);
+    printConvertOutput(resp);
 
     // Send tx
     // getSigner().sendTransaction(resp.data.routes[0].tx);
@@ -35,7 +35,7 @@ export async function swapPtToToken() {
 
 export async function swapSyToPt() {
     // Swap 1 SY to PT in wstETH market with 1% slippage
-    const resp = await callAllRouterActionsAPI(CHAIN_ID, {
+    const resp = await callConvertAPI(CHAIN_ID, {
         tokensIn: SY_ADDRESS,
         amountsIn: '1000000000000000000',
         tokensOut: PT_ADDRESS,
@@ -43,7 +43,7 @@ export async function swapSyToPt() {
         slippage: 0.01,
     });
 
-    printRouterActionsOutput(resp);
+    printConvertOutput(resp);
 
     // Send tx
     // getSigner().sendTransaction(resp.data.routes[0].tx);
@@ -51,7 +51,7 @@ export async function swapSyToPt() {
 
 export async function swapSyToYt() {
     // Swap 1 SY to YT in wstETH market with 1% slippage
-    const resp = await callAllRouterActionsAPI(CHAIN_ID, {
+    const resp = await callConvertAPI(CHAIN_ID, {
         tokensIn: SY_ADDRESS,
         amountsIn: '1000000000000000000',
         tokensOut: YT_ADDRESS,
@@ -59,7 +59,7 @@ export async function swapSyToYt() {
         slippage: 0.01,
     });
 
-    printRouterActionsOutput(resp);
+    printConvertOutput(resp);
 
     // Send tx
     // getSigner().sendTransaction(resp.data.routes[0].tx);
@@ -67,7 +67,7 @@ export async function swapSyToYt() {
 
 export async function swapTokenToYt() {
     // Swap 1 wstETH to YT in wstETH market with 1% slippage
-    const resp = await callAllRouterActionsAPI(CHAIN_ID, {
+    const resp = await callConvertAPI(CHAIN_ID, {
         tokensIn: wstETH,
         amountsIn: '1000000000000000000',
         tokensOut: YT_ADDRESS,
@@ -75,7 +75,7 @@ export async function swapTokenToYt() {
         slippage: 0.01,
     });
 
-    printRouterActionsOutput(resp);
+    printConvertOutput(resp);
 
     // Send tx
     // getSigner().sendTransaction(resp.data.routes[0].tx);
@@ -83,7 +83,7 @@ export async function swapTokenToYt() {
 
 export async function swapTokenToPt() {
     // Swap 1 wstETH to PT in wstETH market with 1% slippage
-    const resp = await callAllRouterActionsAPI(CHAIN_ID, {
+    const resp = await callConvertAPI(CHAIN_ID, {
         tokensIn: wstETH,
         amountsIn: '1000000000000000000',
         tokensOut: PT_ADDRESS,
@@ -91,7 +91,7 @@ export async function swapTokenToPt() {
         slippage: 0.01,
     });
 
-    printRouterActionsOutput(resp);
+    printConvertOutput(resp);
 
     // Send tx
     // getSigner().sendTransaction(resp.data.routes[0].tx);
@@ -99,7 +99,7 @@ export async function swapTokenToPt() {
 
 export async function swapYtToSy() {
     // Swap 1 YT to SY in wstETH market with 1% slippage
-    const resp = await callAllRouterActionsAPI(CHAIN_ID, {
+    const resp = await callConvertAPI(CHAIN_ID, {
         tokensIn: YT_ADDRESS,
         amountsIn: '1000000000000000000',
         tokensOut: SY_ADDRESS,
@@ -107,7 +107,7 @@ export async function swapYtToSy() {
         slippage: 0.01,
     });
 
-    printRouterActionsOutput(resp);
+    printConvertOutput(resp);
 
     // Send tx
     // getSigner().sendTransaction(resp.data.routes[0].tx);
@@ -115,7 +115,7 @@ export async function swapYtToSy() {
 
 export async function swapYtToToken() {
     // Swap 1 YT to wstETH in wstETH market with 1% slippage
-    const resp = await callAllRouterActionsAPI(CHAIN_ID, {
+    const resp = await callConvertAPI(CHAIN_ID, {
         tokensIn: YT_ADDRESS,
         amountsIn: '1000000000000000000',
         tokensOut: wstETH,
@@ -123,7 +123,7 @@ export async function swapYtToToken() {
         slippage: 0.01,
     });
 
-    printRouterActionsOutput(resp);
+    printConvertOutput(resp);
 
     // Send tx
     // getSigner().sendTransaction(resp.data.routes[0].tx);
@@ -133,7 +133,7 @@ export async function swapYtToToken() {
 
 export async function swapTokenToPtUsingAggregation() {
     // Swap 1000 USDC to PT in wstETH market with 1% slippage
-    const resp = await callAllRouterActionsAPI(CHAIN_ID, {
+    const resp = await callConvertAPI(CHAIN_ID, {
         tokensIn: USDC,
         // USDC has 6 decimals
         amountsIn: (1000n * 10n ** 6n).toString(),
@@ -146,7 +146,7 @@ export async function swapTokenToPtUsingAggregation() {
         aggregators: 'kyberswap',
     });
 
-    printRouterActionsOutput(resp);
+    printConvertOutput(resp);
 
     // Send tx
     // getSigner().sendTransaction(resp.data.routes[0].tx);
@@ -155,7 +155,7 @@ export async function swapTokenToPtUsingAggregation() {
 
 export async function swapPtToTokenUsingAggregation() {
     // Swap 1 PT to USDC in wstETH market with 1% slippage
-    const resp = await callAllRouterActionsAPI(CHAIN_ID, {
+    const resp = await callConvertAPI(CHAIN_ID, {
         tokensIn: PT_ADDRESS,
         amountsIn: '1000000000000000000',
         tokensOut: USDC,
@@ -166,7 +166,7 @@ export async function swapPtToTokenUsingAggregation() {
         additionalData: 'impliedApy,effectiveApy'
     });
 
-    printRouterActionsOutput(resp);
+    printConvertOutput(resp);
 
     // Send tx
     // getSigner().sendTransaction(resp.data.routes[0].tx);

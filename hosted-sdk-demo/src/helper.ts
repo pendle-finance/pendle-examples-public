@@ -31,7 +31,7 @@ type TransactionDto = {
     value: string;
 };
 
-type RouterActionsData = {
+type ConvertData = {
     priceImpact: number;
     impliedApy?: any;
     effectiveApy?: number;
@@ -42,10 +42,10 @@ type RouteResponse = {
     contractParamInfo: ContractParamInfo;
     tx: TransactionDto;
     outputs: TokenAmountResponse[];
-    data: RouterActionsData;
+    data: ConvertData;
 };
 
-type RouterActionsResponse = {
+type ConvertResponse = {
     action: string;
     inputs: TokenAmountResponse[];
     requiredApprovals?: TokenAmountResponse[];
@@ -60,15 +60,15 @@ export async function callSDK<Data>(path: string, params: Record<string, any> = 
     return response;
 }
 
-export async function callAllRouterActionsAPI(chainId: number, params: Record<string, any> = {}) {
-    const response = await axios.get<RouterActionsResponse>(HOSTED_SDK_URL + `v2/sdk/${chainId}/convert`, {
+export async function callConvertAPI(chainId: number, params: Record<string, any> = {}) {
+    const response = await axios.get<ConvertResponse>(HOSTED_SDK_URL + `v2/sdk/${chainId}/convert`, {
         params
     });
 
     return response;
 }
 
-export function printRouterActionsOutput(axiosResponse: AxiosResponse<RouterActionsResponse>) {
+export function printConvertOutput(axiosResponse: AxiosResponse<ConvertResponse>) {
     const resp = axiosResponse.data;
     console.log('Action: ', resp.action);
     console.log('Method: ', resp.routes[0].contractParamInfo.method);
