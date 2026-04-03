@@ -1,46 +1,58 @@
 import axios from "axios";
 import { CORE_DOMAIN } from "./const";
 
-interface Param {
-  chainId: number;
-}
-
 interface Query {
-  order_by?: string;
-  skip?: number;
-  limit?: number;
-  is_expired?: boolean;
-  zappable?: boolean;
-  type?: string;
+  chainId?: number;
+  type?: string; // PT, YT, SY, LP
   address?: string;
-  q?: string;
+  q?: string; // Search query
 }
 
 interface AssetInfo {
-  name: string;
-  decimals: number;
+  chainId: number;
   address: string;
+  name: string;
   symbol: string;
+  decimals: number;
+  expiry?: string;
   tags: string[];
-  expiry: string;
+  type: string;
+  underlyingAsset?: string;
+  protocol?: string;
+  yieldBearingAsset?: string;
 }
 
 interface Response {
   assets: AssetInfo[];
 }
 
-export async function getAssets() {
-  // This is an example of how to get list of Pendle assets on Ethereum
+export async function getPendleAssets() {
+  // This example shows how to get all Pendle assets across all chains
+  // using the /v1/assets/all cross-chain endpoint
 
-  const param: Param = {
-    chainId: 1, // Ethereum
+  const query: Query = {
+    // chainId: 1, // Optional: filter by specific chain
+    // type: 'PT', // Optional: filter by asset type (PT, YT, SY, LP)
+  };
+
+  const targetPath = `/v1/assets/all`;
+
+  const { data } = await axios.get<Response>(CORE_DOMAIN + targetPath, { params: query });
+
+  console.log('Total assets:', data.assets.length);
+
+  if (data.assets.length > 0) {
+    const firstAsset = data.assets[0];
+    console.log('\nFirst asset:');
+    console.log('  Chain:', firstAsset.chainId);
+    console.log('  Address:', firstAsset.address);
+    console.log('  Name:', firstAsset.name);
+    console.log('  Symbol:', firstAsset.symbol);
+    console.log('  Type:', firstAsset.type);
+    console.log('  Decimals:', firstAsset.decimals);
+    if (firstAsset.expiry) {
+      console.log('  Expiry:', new Date(firstAsset.expiry).toISOString());
+    }
+    console.log('  Tags:', firstAsset.tags.join(', '));
   }
-
-  const targetPath = `/v3/${param.chainId}/assets/all`;
-
-  const { data } = await axios.get<Response>(CORE_DOMAIN + targetPath);
-
-  const {assets} = data;
-
-  console.log('first asset', assets[0]);
 }
