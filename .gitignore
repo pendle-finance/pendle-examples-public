@@ -36,3 +36,5 @@ __pycache__/
 .editorconfig
 
 */.idea
+
+CLAUDE.local.md

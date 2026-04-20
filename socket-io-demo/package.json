@@ -1,0 +1,16 @@
+{
+  "name": "socket-io-demo",
+  "version": "1.0.0",
+  "description": "Pendle Socket.IO Demo",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx ts-node ./src/index.ts"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^20.12.7",
+    "socket.io-client": "^4.7.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}
