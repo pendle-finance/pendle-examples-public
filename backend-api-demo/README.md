@@ -1,4 +1,4 @@
-# Pendle Limit Order API Demo
+# Pendle Backend API Demo
 
 This repository is designed for developers seeking to interact with Pendle Backend using TypeScript. 
 
@@ -10,7 +10,7 @@ The demo project demonstrates how to
 
 ## Getting Started
 To run examples:
-- Change directory to the demo project folder: `cd limit-order-api-demo`
+- Change directory to the demo project folder: `cd backend-api-demo`
 - Install required dependencies with `npm install`
 - Execute the index.ts file using `npm run start`
 
